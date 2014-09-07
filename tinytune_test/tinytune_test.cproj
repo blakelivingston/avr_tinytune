@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>6.2</ProjectVersion>
+    <ToolchainName>com.Atmel.AVRGCC8.C</ToolchainName>
+    <ProjectGuid>{eeee1506-c34b-4acc-b7ba-a42d13451428}</ProjectGuid>
+    <avrdevice>ATtiny85</avrdevice>
+    <avrdeviceseries>none</avrdeviceseries>
+    <OutputType>Executable</OutputType>
+    <Language>C</Language>
+    <OutputFileName>$(MSBuildProjectName)</OutputFileName>
+    <OutputFileExtension>.elf</OutputFileExtension>
+    <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
+    <AssemblyName>tinytune_test</AssemblyName>
+    <Name>tinytune_test</Name>
+    <RootNamespace>tinytune_test</RootNamespace>
+    <ToolchainFlavour>Native</ToolchainFlavour>
+    <KeepTimersRunning>true</KeepTimersRunning>
+    <OverrideVtor>false</OverrideVtor>
+    <CacheFlash>true</CacheFlash>
+    <ProgFlashFromRam>true</ProgFlashFromRam>
+    <RamSnippetAddress>0x20000000</RamSnippetAddress>
+    <UncachedRange />
+    <OverrideVtorValue>exception_table</OverrideVtorValue>
+    <BootSegment>2</BootSegment>
+    <eraseonlaunchrule>0</eraseonlaunchrule>
+    <AsfFrameworkConfig>
+      <framework-data xmlns="">
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.17.0" />
+        </dependencies>
+      </framework-data>
+    </AsfFrameworkConfig>
+    <avrtool>com.atmel.avrdbg.tool.simulator</avrtool>
+    <com_atmel_avrdbg_tool_simulator>
+      <ToolOptions xmlns="">
+        <InterfaceProperties>
+        </InterfaceProperties>
+      </ToolOptions>
+      <ToolType xmlns="">com.atmel.avrdbg.tool.simulator</ToolType>
+      <ToolNumber xmlns="">
+      </ToolNumber>
+      <ToolName xmlns="">Simulator</ToolName>
+    </com_atmel_avrdbg_tool_simulator>
+    <PercepioTrace>
+      <TargetOS xmlns="" />
+      <Frequency xmlns="">44000</Frequency>
+      <EnableTraceInterrupts xmlns="">False</EnableTraceInterrupts>
+      <EnableNonintrusive xmlns="">True</EnableNonintrusive>
+      <EnableTargetOS xmlns="">False</EnableTargetOS>
+      <EnableApplicationOutput xmlns="">True</EnableApplicationOutput>
+      <EnableDataWatchPoints xmlns="">True</EnableDataWatchPoints>
+      <EnablePC xmlns="">False</EnablePC>
+      <EnablePCPolled xmlns="">False</EnablePCPolled>
+      <PolledFrequency xmlns="">1000</PolledFrequency>
+      <EnableMcu xmlns="">False</EnableMcu>
+      <EnableOsAwareness xmlns="">False</EnableOsAwareness>
+      <HWApplicationOutput xmlns="">False</HWApplicationOutput>
+      <HWInterrupt xmlns="">False</HWInterrupt>
+      <HWIntrusiveDataWatch xmlns="">True</HWIntrusiveDataWatch>
+      <HWNonintrusiveDataWatch xmlns="">False</HWNonintrusiveDataWatch>
+      <HWPolledDataWatch xmlns="">False</HWPolledDataWatch>
+      <HWPolledProgramCounterSampling xmlns="">True</HWPolledProgramCounterSampling>
+      <HWProfiling xmlns="">False</HWProfiling>
+      <HWProgramCounterSampling xmlns="">False</HWProgramCounterSampling>
+    </PercepioTrace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <ToolchainSettings>
+      <AvrGcc>
+  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+  <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+  <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcc.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>NDEBUG</Value>
+    </ListValues>
+  </avrgcc.compiler.symbols.DefSymbols>
+  <avrgcc.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>../..</Value>
+    </ListValues>
+  </avrgcc.compiler.directories.IncludePaths>
+  <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
+  <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+  <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcc.linker.libraries.Libraries>
+    <ListValues>
+      <Value>libm</Value>
+    </ListValues>
+  </avrgcc.linker.libraries.Libraries>
+</AvrGcc>
+    </ToolchainSettings>
+    <PreBuildEvent>cd ..
+
+mkdir test_songs
+cd test_songs
+
+cmd /c "python ../../utils/xrns2tt.py ../../test_songs/*.xrns"</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <ToolchainSettings>
+      <AvrGcc>
+        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+        <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcc.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>../..</Value>
+          </ListValues>
+        </avrgcc.compiler.directories.IncludePaths>
+        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+        <avrgcc.linker.libraries.Libraries>
+          <ListValues>
+            <Value>libm</Value>
+          </ListValues>
+        </avrgcc.linker.libraries.Libraries>
+        <avrgcc.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>DEBUG</Value>
+          </ListValues>
+        </avrgcc.compiler.symbols.DefSymbols>
+        <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
+        <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
+        <avrgcc.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcc.assembler.debugging.DebugLevel>
+      </AvrGcc>
+    </ToolchainSettings>
+    <PreBuildEvent>cd ..
+
+mkdir test_songs
+cd test_songs
+
+cmd /c "python ../../utils/xrns2tt.py ../../test_songs/*.xrns"</PreBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\tinytune\settings.h">
+      <SubType>compile</SubType>
+      <Link>settings.h</Link>
+    </Compile>
+    <Compile Include="..\tinytune\tinytune.c">
+      <SubType>compile</SubType>
+      <Link>tinytune.c</Link>
+    </Compile>
+    <Compile Include="..\tinytune\tinytune.h">
+      <SubType>compile</SubType>
+      <Link>tinytune.h</Link>
+    </Compile>
+    <Compile Include="test_songs\demo1.c">
+      <SubType>compile</SubType>
+      <Link>demo1.c</Link>
+    </Compile>
+    <Compile Include="test_songs\demo1.h">
+      <SubType>compile</SubType>
+      <Link>demo1.h</Link>
+    </Compile>
+    <Compile Include="test_songs\env_test.c">
+      <SubType>compile</SubType>
+      <Link>env_test.c</Link>
+    </Compile>
+    <Compile Include="test_songs\env_test.h">
+      <SubType>compile</SubType>
+      <Link>env_test.h</Link>
+    </Compile>
+    <Compile Include="test_songs\faxanadu.c">
+      <SubType>compile</SubType>
+      <Link>faxanadu.c</Link>
+    </Compile>
+    <Compile Include="test_songs\faxanadu.h">
+      <SubType>compile</SubType>
+      <Link>faxanadu.h</Link>
+    </Compile>
+    <Compile Include="test_songs\luna.c">
+      <SubType>compile</SubType>
+      <Link>luna.c</Link>
+    </Compile>
+    <Compile Include="test_songs\luna.h">
+      <SubType>compile</SubType>
+      <Link>luna.h</Link>
+    </Compile>
+    <Compile Include="test_songs\noise.c">
+      <SubType>compile</SubType>
+      <Link>noise.c</Link>
+    </Compile>
+    <Compile Include="test_songs\noise.h">
+      <SubType>compile</SubType>
+      <Link>noise.h</Link>
+    </Compile>
+    <Compile Include="test_songs\pitch.c">
+      <SubType>compile</SubType>
+      <Link>pitch.c</Link>
+    </Compile>
+    <Compile Include="test_songs\pitch.h">
+      <SubType>compile</SubType>
+      <Link>pitch.h</Link>
+    </Compile>
+    <Compile Include="test_songs\zelda.c">
+      <SubType>compile</SubType>
+      <Link>zelda.c</Link>
+    </Compile>
+    <Compile Include="test_songs\zelda.h">
+      <SubType>compile</SubType>
+      <Link>zelda.h</Link>
+    </Compile>
+    <Compile Include="tinytune_test.c">
+      <SubType>compile</SubType>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
+</Project>

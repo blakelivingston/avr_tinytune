@@ -1,0 +1,100 @@
+<h1>Avr TinyTune</h1>
+
+<p>Avr Tinytune is a multi-voice, mult-timbral audio synthesis and song playback library targetting the <a href="http://www.atmel.com/devices/attiny85.aspx">Atmel ATtiny85 microcontroller</a>, requiring minimal additional electronic components for use in projects.</p>
+
+<h2>What Exactly Does It Do?</h2>
+
+<p>The C library consists of two somewhat independent parts; A multi-voice synthesizer that uses Fast PWM to simulate 8-bit analog output, and an interrupt driven background-song playback system that plays note and controller data out of chip Flash memory (progmem).</p>
+
+<p>There is also an import utility that generates embeddable code representations of songs, using the save files of the <a href="http://www.renoise.com/">Renoise</a> tracker-based music composition program as input. Renoise offers a demo version that is useable with this project; though I heartily encourage supporting their excellent software if you find it useful.</p>
+
+<h2>Features</h2>
+
+<h3>Hardware</h3>
+
+<ul>
+<li><p><strong>No</strong> external crystal or oscillator required, though they can probably be used (untested). The ATtiny line of microcontrollers include a fast PLL peripheral clock (PCK) that runs at 64MHz, providing a cpu clock of 16MHz, and an 8-bit duty-cycle resolution PWM period of 250KHz.</p>
+
+<ul>
+<li>Quality wise, this is especially nice since the PLL-generated high PWM frequency is easier to filter and introduces less acoustic distortion.</li>
+<li>With no additional components, the clock may be able to be boosted to 20MHz, for more polypony or higher sample rate, with no additional components, using the OSCCAL register <em>(I have not tested this and it is not directly supported in code settings yet)</em></li>
+</ul></li>
+<li><p>Requires only an external resistor for very basic use, e.g. driving small headphones <em>badly</em> (since they act as a sort of physical low pass filter).  <em>Against <strong>all</strong> better judgement, even this can be skipped if you don't mind blowing up your chip (by output current overload) or your eardrum every now and then.</em></p></li>
+<li><p>A resistor capacitor lowpass filter can be used to smooth the PWM output into a reasonably clean audio signal, suitable for driving small headphones or input into an amplifier circuit.</p></li>
+</ul>
+
+<h3>Synthesis</h3>
+
+<ul>
+<li>Can play as many simultaneous voices as the MCU speed and RAM can accomodate</li>
+<li>Offers the following voice types:
+<ul>
+<li>PWM (square wave), with adjustable duty cycle</li>
+<li>Triangle/Saw wave, continuously adjustable between the two waveforms</li>
+<li>Noise channel. This is currently usable, but slow. Improvements are planned</li>
+</ul></li>
+<li>Adjustable playback volume</li>
+<li>Interrupt based, and can run in the background</li>
+<li>Bit Crush
+<ul>
+<li>Reduces output waveform bit depth. Makes most sense on triangle waves. Try a BitCrush of 4 on a TRI wave for that old-school NES tri sound.</li>
+</ul></li>
+</ul>
+
+<h3>Song playback</h3>
+
+<ul>
+<li>Arbitrary envelopes, including sustain and release</li>
+<li>Portamento and pitch-glides</li>
+<li>Pattern based playback, for space efficiency
+*repeated patterns of music do not take much additional Flash ram</li>
+<li>Song size limited mostly by Flash capacity</li>
+<li>Interrupt based, and can run in the background</li>
+</ul>
+
+<h3>Renoise import</h3>
+
+<ul>
+<li>Supports arbitrary pattern lengths</li>
+<li>Instrument envelope import</li>
+<li>Imports pitch glide and bend commands</li>
+</ul>
+
+<h2>Limitations</h2>
+
+<ul>
+<li>Noise channel only supports 4-bit volume (life is hard without hardware multiply)</li>
+<li>Not all envelope parameters are supported (no loops)</li>
+<li>There are still some bugs in synthesis</li>
+<li>Output pin is hard-coded to Pin 4 (OC1B) It should be changeable, but it is untested.</li>
+<li>Importer does not set waveform types per instrument yet. They must be set manually when song playback begins (or after if you want).
+<ul>
+<li>There is no technical limitation preventing this, it just hasn't been done yet</li>
+<li>I would envision setting special Renoise instrument names that represent the voice type, e.g. "PWM duty:64" that the importer interprets into song data.</li>
+</ul></li>
+<li>There are some parts of code, particularly in the importer, that I am not especially proud of. A refactoring sweep, knowing what the implementation process had to teach, would do the code base well</li>
+<li>It should be possible to have this run with an external crystal resonator for predictable sound tuning, but I have not tried it yet. The output would also need to be moved to a different pin, since it overlaps one the ATtiny85's resonator pins. Patches welcome.</li>
+<li>Envelopes and pitch bends will only function while a 'song' is playing, initiated by playSong(). For non-song audio synthesis, the caller will have to change volumes and pitches as needed.
+<ul>
+<li>This would be a reasonable feature for addition</li>
+</ul></li>
+</ul>
+
+<h2>Documentation and Demos</h2>
+
+<ul>
+<li>See the tinytune_test directory for an example of song playback and conversion.</li>
+<li>See the docs directory for further information.</li>
+<li>See <a href="tinytune/tinytune.h">tinytune/tinytune.h</a> for per-function comments.</li>
+</ul>
+
+<h2>Hacking</h2>
+
+<p>This is a hobby project, and my MCU and electronics experience could always use input. Feel free to make suggestions, point out document errors and unclearness, and, best still, submit patches or feature additions to the project.</p>
+
+<p>Also feel free to drop me a line if you use this library! I'm always curious to see how it 
+comes in handy. My original intent was to augment <a href="http://www.otamatone.com/">one of these guys</a> with super enhanced sound, but I still haven't gotten around to it.</p>
+
+<h2>License</h2>
+
+<p>This project is provided under an <a href="LICENSE">MIT License</a></p>
