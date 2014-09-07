@@ -17,7 +17,7 @@ Features
 
 * **No** external crystal or oscillator required, though they can probably be used (untested). The ATtiny line of microcontrollers include a fast PLL peripheral clock (PCK) that runs at 64MHz, providing a cpu clock of 16MHz, and an 8-bit duty-cycle resolution PWM period of 250KHz.
 	* Quality wise, this is especially nice since the PLL-generated high PWM frequency is easier to filter and introduces less acoustic distortion.
-	* With no additional components, the clock may be able to be boosted to 20MHz, for more polyphony or higher sample rate, with no additional components, using the OSCCAL register _(I have not tested this and it is not directly supported in code settings yet)_
+	* The cpu clock may potentially be able to be boosted to 20MHz, for more polyphony or higher sample rate, with no additional components, by setting the OSCCAL register to its maximum of 0xFF _(I have not tested this and it is not directly supported in code settings yet)_
 
 * Requires only an external resistor for very basic use, e.g. driving small headphones _badly_ (since they act as a sort of physical low pass filter).  _Against **all** better judgment, even this can be skipped if you don't mind blowing up your chip (by output current overload) or your eardrum every now and then._
 
