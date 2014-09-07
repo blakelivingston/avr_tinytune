@@ -1,14 +1,14 @@
 Avr TinyTune
 ===
 
-Avr Tinytune is a multi-voice, mult-timbral audio synthesis and song playback library targetting the [Atmel ATtiny85 microcontroller](http://www.atmel.com/devices/attiny85.aspx), requiring minimal additional electronic components for use in projects.
+Avr Tinytune is a multi-voice, mult-timbral audio synthesis and song playback library targeting the [Atmel ATtiny85 microcontroller](http://www.atmel.com/devices/attiny85.aspx), requiring minimal additional electronic components for use in projects.
 
 What Exactly Does It Do?
 ---
 
 The C library consists of two somewhat independent parts; A multi-voice synthesizer that uses Fast PWM to simulate 8-bit analog output, and an interrupt driven background-song playback system that plays note and controller data out of chip Flash memory (progmem).
 
-There is also an import utility that generates embeddable code representations of songs, using the save files of the [Renoise](http://www.renoise.com/) tracker-based music composition program as input. Renoise offers a demo version that is useable with this project; though I heartily encourage supporting their excellent software if you find it useful.
+There is also an import utility that generates embeddable code representations of songs, using the save files of the [Renoise](http://www.renoise.com/) tracker-based music composition program as input. Renoise offers a demo version that is usable with this project; though I heartily encourage supporting their excellent software if you find it useful.
 
 Features
 ---
@@ -17,14 +17,14 @@ Features
 
 * **No** external crystal or oscillator required, though they can probably be used (untested). The ATtiny line of microcontrollers include a fast PLL peripheral clock (PCK) that runs at 64MHz, providing a cpu clock of 16MHz, and an 8-bit duty-cycle resolution PWM period of 250KHz.
 	* Quality wise, this is especially nice since the PLL-generated high PWM frequency is easier to filter and introduces less acoustic distortion.
-	* With no additional components, the clock may be able to be boosted to 20MHz, for more polypony or higher sample rate, with no additional components, using the OSCCAL register _(I have not tested this and it is not directly supported in code settings yet)_
+	* With no additional components, the clock may be able to be boosted to 20MHz, for more polyphony or higher sample rate, with no additional components, using the OSCCAL register _(I have not tested this and it is not directly supported in code settings yet)_
 
-* Requires only an external resistor for very basic use, e.g. driving small headphones _badly_ (since they act as a sort of physical low pass filter).  _Against **all** better judgement, even this can be skipped if you don't mind blowing up your chip (by output current overload) or your eardrum every now and then._
+* Requires only an external resistor for very basic use, e.g. driving small headphones _badly_ (since they act as a sort of physical low pass filter).  _Against **all** better judgment, even this can be skipped if you don't mind blowing up your chip (by output current overload) or your eardrum every now and then._
 
 * A resistor capacitor lowpass filter can be used to smooth the PWM output into a reasonably clean audio signal, suitable for driving small headphones or input into an amplifier circuit.
 
 ### Synthesis
-* Can play as many simultaneous voices as the MCU speed and RAM can accomodate
+* Can play as many simultaneous voices as the MCU speed and RAM can accommodate
 * Offers the following voice types:
 	* PWM (square wave), with adjustable duty cycle
 	* Triangle/Saw wave, continuously adjustable between the two waveforms
