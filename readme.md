@@ -52,7 +52,7 @@ Limitations
 * Noise channel only supports 4-bit volume (life is hard without hardware multiply)
 * Not all envelope parameters are supported (no loops)
 * There are still some bugs in synthesis
-* Output pin is hard-coded to Pin 4 (OC1B) It should be changeable, but it is untested.
+* Output pin is hard-coded to Pin 3 (OC1B) It should be changeable, but it is untested.
 * Importer does not set waveform types per instrument yet. They must be set manually when song playback begins (or after if you want).
 	* There is no technical limitation preventing this, it just hasn't been done yet
 	* I would envision setting special Renoise instrument names that represent the voice type, e.g. "PWM duty:64" that the importer interprets into song data.
