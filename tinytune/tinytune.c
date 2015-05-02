@@ -67,27 +67,37 @@ inline int16_t four_bit_scale(int16_t input, uint8_t scale) {
 }
 
 void initPLL(void) {
-  PLLCSR = 1 << PLLE; //Enable PLL
-  _delay_us(100); // Wait for a sync;
-  while (!(PLLCSR & (1 << PLOCK))) {
-  };
-  // PLL Synced
-  PLLCSR |= (1 << PCKE); // Enable Asynchronous PCK mode.
+//  PLLCSR = 1 << PLLE; //Enable PLL
+//  _delay_us(100); // Wait for a sync;
+//  while (!(PLLCSR & (1 << PLOCK))) {
+//  };
+//  // PLL Synced
+//  PLLCSR |= (1 << PCKE); // Enable Asynchronous PCK mode.
 }
 
 void initSampleInterrupt(void) {
-  // Clock : Sys/8 (2mhz)
-  // Fast PWM mode (|WGM0-2)
-  TCCR0A = (1 << WGM00) | (1 << WGM01);
-  TCCR0B = (1 << CS01) | (1 << WGM02);
-  // Enable interrupt on overflow.
-  TIMSK |= (1 << TOIE0);
-  // In fast PWM mode, the timer overflows at OCR0A
-  // Our timer / OCR0A = SAMPLE RATE
-  // Do make sure this is under 255..
-  OCR0A = SAMPLE_CLOCK_DIVIDER;
-  sei();
-  // Enable interrupts
+	  /* OLD CODE
+	  // Clock : Sys/8 (2mhz)
+	  // Fast PWM mode (|WGM0-2)
+	  TCCR0A = (1 << WGM00) | (1 << WGM01);
+	  TCCR0B = (1 << CS01) | (1 << WGM02);
+	  // Enable interrupt on overflow.
+	  TIMSK |= (1 << TOIE0);
+	  // In fast PWM mode, the timer overflows at OCR0A
+	  // Our timer / OCR0A = SAMPLE RATE
+	  // Do make sure this is under 255..
+	  OCR0A = SAMPLE_CLOCK_DIVIDER;
+	  sei();
+	  // Enable interrupts
+	  */
+
+	  TIMSK |= (1 << TOIE1);
+	  // fast pwm ( WGM13, 12, 11,10) for TOP controlled by OCR1A
+	  TCCR1B |= (1 << WGM12 ) | (1 << WGM13);
+	  TCCR1A |= (1 << WGM10) | (1 << WGM11);
+	  TCCR1B |= (1 << CS11); // CS11 for /8 divider
+	  OCR1A = SAMPLE_CLOCK_DIVIDER;
+	  sei();
 }
 
 void do_song_tick(void);
@@ -97,7 +107,8 @@ void do_song_tick(void);
 volatile uint8_t task_bits = 0;
 ISR(TIMER0_OVF_vect)
 {
-  OCR1B = sample_buffer[sample_buf_clock++];
+  //OCR1B = sample_buffer[sample_buf_clock++];
+  OCR2 = sample_buffer[sample_buf_clock++];
   ++sample_cnt;
   ++song_info.tick_smp_count;
   if (sample_buf_clock == SAMPLE_BUFFER)
@@ -153,16 +164,23 @@ void waitMS(uint16_t ms) {
   } while (sample_cnt < dest);
 }
 void initPWMB(void) {
-  TCCR1 = (1 << CS10); // Run at PCK/1
-  GTCCR = (1 << PWM1B) | (1 << COM1B0); //Enable PWMB (pb4)
-  DDRB |= (1 << PB4) | (1 << PB0) | (1 << PB1); // Output on pb4
-  OCR1C = 0xff;
+	  /*TCCR1 = (1 << CS10); // Run at PCK/1
+	  GTCCR = (1 << PWM1B) | (1 << COM1B0); //Enable PWMB (pb4)
+	  DDRB |= (1 << PB4) | (1 << PB0) | (1 << PB1); // Output on pb4
+	  OCR1C = 0xff; */
+
+	  // set up timer 2 - this will be the output PWM
+	  TCCR2 |= ((1 << WGM21) | (1 << WGM20)); // Fast-PWM (p.115)
+	  TCCR2 |= (1 << COM21); // non-inverting OC2 pin output (p115)
+	  TCCR2 &= ~(1 << COM20);
+	  TCCR2 |= (1 << CS10); // prescale 1x
+	  OCR2 = 0;
 }
 
 void initTinyTune(void) {
   for (uint8_t i = 0; i < N_VOICES; ++i)
     initVoicePWM(i);
-  initPLL();
+  //initPLL();
   initPWMB();
   song_info.playing = 0;
   initSampleInterrupt();

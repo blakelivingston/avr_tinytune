@@ -9,7 +9,7 @@ include songgen.mk
 AVRDUDE_PROGRAMMER = avrisp2
 AVRDUDE_PORT = usb
 
-MCU = attiny85
+MCU = atmega8
 FORMAT = ihex
 TARGET = tinytune_test
 TINYTUNE = ../tinytune/tinytune.c
@@ -182,7 +182,6 @@ extcoff: $(TARGET).elf
 # Create a symbol table from ELF output file.
 .elf.sym:
 	$(NM) -n $< > $@
-
 
 
 # Link: create ELF output file from object files.
