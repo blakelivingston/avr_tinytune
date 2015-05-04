@@ -7,7 +7,7 @@
 #include <avr/portpins.h>
 #include "tinytune/tinytune.h"
 
-#define TEST_FAXANADU
+#define TEST_ZELDA
 
 #ifdef TEST_ZELDA
 #include "test_songs/zelda.h"

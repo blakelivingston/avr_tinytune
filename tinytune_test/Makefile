@@ -86,7 +86,7 @@ LDFLAGS = $(EXTMEMOPTS) $(LDMAP) $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB)   -Wl,--
 
 # Programming support using avrdude. Settings and variables.
 AVRDUDE_WRITE_FLASH = -U flash:w:$(TARGET).hex
-AVRDUDE_WRITE_FUSES = -U lfuse:w:0xd1:m -U hfuse:w:0xdf:m -U efuse:w:0xff:m
+AVRDUDE_WRITE_FUSES = -U lfuse:w:0xe4:m -U hfuse:w:0xd9:m
 #AVRDUDE_WRITE_EEPROM = -U eeprom:w:$(TARGET).eep
 
 
@@ -104,8 +104,8 @@ AVRDUDE_WRITE_FUSES = -U lfuse:w:0xd1:m -U hfuse:w:0xdf:m -U efuse:w:0xff:m
 # to submit bug reports.
 #AVRDUDE_VERBOSE = -v -v
 
-AVRDUDE_BASIC = -p $(MCU) -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROGRAMMER)
-AVRDUDE_FLAGS = $(AVRDUDE_BASIC) $(AVRDUDE_NO_VERIFY) $(AVRDUDE_VERBOSE) $(AVRDUDE_ERASE_COUNTER)
+AVRDUDE_BASIC = -p $(MCU) -B 4 -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROGRAMMER)
+AVRDUDE_FLAGS = $(AVRDUDE_BASIC) $(AVRDUDE_NO_VERIFY) $(AVRDUDE_VERBOSE) $(AVRDUDE_ERASE_COUNTER) -B 4
 
 
 CC = avr-gcc

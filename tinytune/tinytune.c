@@ -105,10 +105,11 @@ void do_song_tick(void);
 #define SYNTH_TASK 1
 #define SONG_TASK 2
 volatile uint8_t task_bits = 0;
-ISR(TIMER0_OVF_vect)
+ISR(TIMER1_OVF_vect)
 {
   //OCR1B = sample_buffer[sample_buf_clock++];
   OCR2 = sample_buffer[sample_buf_clock++];
+
   ++sample_cnt;
   ++song_info.tick_smp_count;
   if (sample_buf_clock == SAMPLE_BUFFER)
@@ -175,6 +176,7 @@ void initPWMB(void) {
 	  TCCR2 &= ~(1 << COM20);
 	  TCCR2 |= (1 << CS10); // prescale 1x
 	  OCR2 = 0;
+	  DDRB |= (1 << DDB3); // Enable OC2 (PB3) as output
 }
 
 void initTinyTune(void) {
