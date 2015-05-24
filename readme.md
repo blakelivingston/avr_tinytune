@@ -16,6 +16,8 @@ Update
 ---
 Renoise 3.01 or better is required for song import. If updating a song from an older version of Renoise, the volume envelopes in the song need to be "Upgraded" in the envelope editing UI. The importer won't pick them up otherwise.
 
+Atmega8 support added via a patch contributed by <a href="https://github.com/lberezy">Lucas Berezy</a>! Output is on PB3, or pin 17.
+
 Features
 ---
 
