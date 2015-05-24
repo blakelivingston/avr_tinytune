@@ -29,6 +29,8 @@ int main(void)
 {
   initTinyTune();
   initVoiceTRI(2);
+  setDuty(0,0x80);
+  setDuty(0,0x85);
   setBitCrunch(2,4);
   playSong(&faxanadu);
   while(1)
@@ -46,6 +48,18 @@ int main(void)
   while(1)
   {
   }
+}
+#endif
+
+#ifdef TEST_ENV
+#include "test_songs/env_test.h"
+int main(void)
+{
+	initTinyTune();
+	playSong(&env_test);
+	while(1)
+	{
+	}
 }
 #endif
 

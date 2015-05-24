@@ -20,15 +20,19 @@ class Envelope(object):
   """
 
     def parse(self, env, tpl, lpb):
-        if env.find('IsActive').text == 'true':
+        def beats_to_songticks(b):
+            return (b / 256.0) * tpl * lpb
+
+        if env.find('IsActive/Value').text =="1.0":
             self.active = True
         else:
             self.active = False
             return
         if env.find('SustainIsActive').text == 'true':
+
             self.sustain = True
             self.sustain_pt = int(env.find('SustainPos').text)
-            self.sustain_pt = int((self.sustain_pt * tpl * lpb / 24.0))
+            self.sustain_pt = int(beats_to_songticks(self.sustain_pt))
         else:
             self.sustain = False
             self.sustain_pt = 255
@@ -41,7 +45,7 @@ class Envelope(object):
             levels.append(float(level))
             # Envelope ticks are NOT song ticks.
             # there are 24 env ticks per beat.
-            env_ticks.append(int((tick * tpl * lpb / 24.0)))
+            env_ticks.append(int(beats_to_songticks(tick)))
         self.slopes = [0]
         if env_ticks[0] != 0:
             self.tick_deltas = [env_ticks[0]]
@@ -96,12 +100,13 @@ def xrns_to_tt(input_file,
     envelopes = []
     inst_remap = {}
     for inst_id, inst in enumerate(instruments):
-        vol_env = inst.find('SampleEnvelopes/Volume')
-        env = Envelope()
-        env.parse(vol_env, tpl, lpb)
-        if env.active:
-            inst_remap[inst_id] = len(envelopes)
-            envelopes.append(env)
+        vol_env = inst.find('.//SampleEnvelopeModulationDevice')
+        if vol_env is not None:
+            env = Envelope()
+            env.parse(vol_env, tpl, lpb)
+            if env.active:
+                inst_remap[inst_id] = len(envelopes)
+                envelopes.append(env)
 
     total_notes = 0
 
@@ -198,6 +203,7 @@ def xrns_to_tt(input_file,
         for l_idx in xrange(len(cur_pat)):
             tt_line = []
             cur_line = cur_pat[l_idx]
+            fxval = 0
             for t_idx in xrange(len(cur_line)):
                 cnote = cur_line[t_idx]
                 if cnote is None or t_idx not in active_tracks:
@@ -205,7 +211,6 @@ def xrns_to_tt(input_file,
                 note, fx = cnote
                 if fx is not None:
                     fxcode = None
-                    fxval = None
                     for elem in fx:
                         if elem.tag == "Number":
                             fxcode = elem.text
@@ -234,6 +239,8 @@ def xrns_to_tt(input_file,
                             if elem.text != '---':
                                 note_val = note_to_num(elem.text)
                                 note_val += track_tunings.get(t_idx, 0)
+                                track_volumes[t_idx] = 0xff
+                                volume = 0xff
                     if elem.tag == 'Instrument':
                         if elem.text != '..':
                             i = int(elem.text, 16)
@@ -245,11 +252,13 @@ def xrns_to_tt(input_file,
                             v = int(elem.text, 16) * 2
                         else:
                             v = 0xff
+
                         if v is not None and track_volumes.get(t_idx, -1) != v:
                             track_volumes[t_idx] = v
                             volume = v
                         else:
                             volume = None
+                        # print "VOLv",volume, t_idx, v,track_volumes
                 if (note_val is not None or
                     volume is not None or
                     inst is not None):

@@ -10,7 +10,12 @@ The C library consists of two somewhat independent parts; A multi-voice synthesi
 
 There is also an import utility that generates embeddable code representations of songs, using the save files of the [Renoise](http://www.renoise.com/) tracker-based music composition program as input. Renoise offers a demo version that is usable with this project; though I heartily encourage supporting their excellent software if you find it useful.
 
-Example video, running into an oscilloscope: https://www.youtube.com/watch?v=PtxxCKs822M
+Example video, running into an oscilloscope: <a href="https://www.youtube.com/watch?v=PtxxCKs822M">https://www.youtube.com/watch?v=PtxxCKs822M</a>
+
+Update
+---
+Renoise 3.01 or better is required for song import. If updating a song from an older version of Renoise, the volume envelopes in the song need to be "Upgraded" in the envelope editing UI. The importer won't pick them up otherwise.
+
 Features
 ---
 
