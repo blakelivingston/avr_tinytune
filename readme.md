@@ -21,8 +21,6 @@ Update
 
 * Atmega8 support added via a patch contributed by <a href="https://github.com/lberezy">Lucas Berezy</a>! Output is on PB3, or pin 17.
 
-Atmega8 support added via a patch contributed by <a href="https://github.com/lberezy">Lucas Berezy</a>! Output is on PB3, or pin 17.
-
 Features
 ---
 
