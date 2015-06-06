@@ -14,9 +14,12 @@ Example video, running into an oscilloscope: <a href="https://www.youtube.com/wa
 
 Update
 ---
-Renoise 3.01 or better is required for song import. If updating a song from an older version of Renoise, the volume envelopes in the song need to be "Upgraded" in the envelope editing UI. The importer won't pick them up otherwise.
+* Now with much more stable playback in the face of occasional buffer under-runs. Sounds like circuit-bent mayhem at 65000hz.
+	* Song `TEST_ENV` at `#define SAMPLE_BUFFER 30` and `#define SAMPLE_RATE 78930UL` in settings is  kind of bonkers.
 
-Atmega8 support added via a patch contributed by <a href="https://github.com/lberezy">Lucas Berezy</a>! Output is on PB3, or pin 17.
+* Renoise 3.01 or better is required for song import. If updating a song from an older version of Renoise, the volume envelopes in the song need to be "Upgraded" in the envelope editing UI. The importer won't pick them up otherwise.
+
+* Atmega8 support added via a patch contributed by <a href="https://github.com/lberezy">Lucas Berezy</a>! Output is on PB3, or pin 17.
 
 Features
 ---

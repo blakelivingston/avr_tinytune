@@ -119,28 +119,32 @@ ISR(TIMER0_OVF_vect)
   #else
   OCR1B = sample_buffer[sample_buf_clock++];
   #endif
-  
   ++sample_cnt;
   ++song_info.tick_smp_count;
+  static bool sample_processing = 0;
+  
+  
+  
   if (sample_buf_clock == SAMPLE_BUFFER)
-    sample_buf_clock = 0;
+  sample_buf_clock = 0;
   uint8_t fill_sample_buffer = 0;
   if (sample_buf_clock == 0) {
     fill_sample_buffer = 1;
     sample_update_idx = SAMPLE_BUFFER / 2;
-  } else if (sample_buf_clock == SAMPLE_BUFFER / 2) {
+    } else if (sample_buf_clock == SAMPLE_BUFFER / 2) {
     fill_sample_buffer = 1;
     sample_update_idx = 0;
   }
 
-  if (fill_sample_buffer && !(task_bits & SYNTH_TASK)) {
+  if ((!sample_processing) && fill_sample_buffer && !(task_bits & SYNTH_TASK)) {
+    sample_processing = 1;
     task_bits |= SYNTH_TASK;
     PORTB |= 1;
     sei();
-    memset(&sample_buffer[sample_update_idx], 0, SAMPLE_BUFFER);
+    //memset(&sample_buffer[sample_update_idx], 0, SAMPLE_BUFFER);
     for (uint8_t i = 0; i < N_VOICES; ++i) {
       if (voices[i].enabled)
-        voices[i]._getSample(&voices[i]);
+      voices[i]._getSample(&voices[i]);
     }
     for (uint8_t i = 0; i < SAMPLE_BUFFER / 2; ++i) {
       int16_t tmp = sample_buffer[sample_update_idx + i] >> OUTPUT_SCALE_SHIFT;
@@ -150,23 +154,30 @@ ISR(TIMER0_OVF_vect)
     }
     PORTB &= ~1;
     task_bits &= ~SYNTH_TASK;
+    sample_processing = 0;
     return;
   }
-  if (song_info.playing && song_info.tick_smp_count
-      > song_info.samples_per_tick && !(task_bits & SONG_TASK) && !(task_bits
-      & SYNTH_TASK)) {
-    //task_bits &= ~SYNTH_TASK;
-    // Re enable sample interrupts while we 'do' the song tick.
-    // Note sets have division and stuff, so it might take a little while.
-    // If it takes longer than the tick itself, then you have problems.
-    task_bits |= SONG_TASK;
-    sei();
-    PORTB |= 2;
-    song_info.tick_smp_count = 0;
-    do_song_tick();
-    PORTB &= ~2;
-    task_bits &= ~SONG_TASK;
-  }
+
+  static bool pattern_processing = 0;
+  if(!pattern_processing) {
+    pattern_processing = 1; 
+    if (song_info.playing && song_info.tick_smp_count
+        > song_info.samples_per_tick && !(task_bits & SONG_TASK) && !(task_bits
+        & SYNTH_TASK)) {
+      //task_bits &= ~SYNTH_TASK;
+      // Re enable sample interrupts while we 'do' the song tick.
+      // Note sets have division and stuff, so it might take a little while.
+      // If it takes longer than the tick itself, then you have problems.
+      task_bits |= SONG_TASK;
+      sei();
+      PORTB |= 2;
+      song_info.tick_smp_count = 0;
+      do_song_tick();
+      PORTB &= ~2;
+      task_bits &= ~SONG_TASK;
+    }
+    pattern_processing = 0;
+  }  
 }
 
 void waitMS(uint16_t ms) {
