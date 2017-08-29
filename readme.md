@@ -1,3 +1,6 @@
+*NOTE* TinyTune has been superseded by <a href="https://github.com/blakelivingston/DuinoTune"> DuinoTune</a> which has more updates, compatibility, and better song conversion.
+===
+
 Avr TinyTune
 ===
 
